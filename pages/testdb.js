@@ -9,11 +9,16 @@ class testdb extends React.Component {
             listUser: null,
             name: null,
             phone: null,
-            company: null
+            company: null,
+            currentId: null
         };
     }
     componentDidMount() {
-        axios.get('http://localhost:8080/api/users')
+        this.getUser();
+    }
+
+    getUser = () => {
+        axios.get('/api/users')
             .then(response => {
                 this.setState({ listUser: response.data });
             })
@@ -23,17 +28,20 @@ class testdb extends React.Component {
     }
 
     addUser = () => {
-        const {name, phone, company} = this.state;
+        const { name, phone, company } = this.state;
         let body = {
             name: name,
             phone: phone,
             company: company
         };
-        console.log(body);
-        axios.post('http://localhost8080/api/users', body)
-        .then(response => {
-            console.log(response)
-        })
+        axios.post('/api/users', body)
+            .then(response => {
+                console.log('ADDED !!!');
+                this.getUser();
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
     }
 
     onChangeInput = (e) => {
@@ -48,8 +56,33 @@ class testdb extends React.Component {
 
     deleteUser = (e) => {
         const id = e.target.value;
-        axios.delete('http://localhost:8080/api/users/', 1);
-        console.log('jhdqwd');
+        let url = '/api/users/' + id;
+        axios.delete(url)
+            .then(response => {
+                console.log('deleted item');
+                this.getUser();
+            })
+            .catch(function (error) {
+                console.lof(error)
+            })
+    }
+
+    changeCurrentId = (e) => {
+        this.setState({
+            currentId: e.target.value
+        })
+    }
+
+    editUser = () => {
+        const { name, phone, company } = this.state;
+        let body = {
+            name: name,
+            phone: phone,
+            company: company
+        };
+        let url = '/api/users/' + this.state.currentId;
+        axios.put(url, body);
+        this.getUser();
     }
 
     render() {
@@ -79,7 +112,10 @@ class testdb extends React.Component {
                                             <td>{user.name}</td>
                                             <td>{user.phone}</td>
                                             <td>{user.company}</td>
-                                            <td><button onClick={this.deleteUser} value={user.id}>Delete</button></td>
+                                            <td>
+                                                <button onClick={this.deleteUser} value={user.id}>Delete</button>
+                                                <button onClick={this.changeCurrentId} value={user.id}>Edit</button>
+                                            </td>
                                         </tr>
                                     )
                                 })
@@ -92,6 +128,14 @@ class testdb extends React.Component {
                         <input type="number" placeholder="Number Phone" name="phone" onChange={this.onChangeInput}></input><br />
                         <input name="company" placeholder="Company Name" onChange={this.onChangeInput}></input><br />
                         <button onClick={this.addUser}>ADD</button>
+                    </div>
+                    <div id="form-edit-user">
+                        <div>EDIT USER</div>
+                        <div>{this.state.currentId}</div>
+                        <input name="name" placeholder="Name" onChange={this.onChangeInput}></input><br />
+                        <input type="number" placeholder="Number Phone" name="phone" onChange={this.onChangeInput}></input><br />
+                        <input name="company" placeholder="Company Name" onChange={this.onChangeInput}></input><br />
+                        <button onClick={this.editUser}>EDIT</button>
                     </div>
                 </div>
             )

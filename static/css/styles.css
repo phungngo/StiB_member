@@ -17,6 +17,17 @@ table, th, td{
     padding: 2px 20px;
 }
 
-#form-add-user input{
+#form-edit-user input,#form-add-user input{
     margin-bottom: 5px
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    display: none; 
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+button{
+    margin-left: 5px
 }

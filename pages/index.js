@@ -2,20 +2,74 @@ import * as React from 'react';
 // import MaxMinInput from '../components/maxMinInput';
 
 class index extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: 0,
-            error: null,
-            items: [],
-            isLoaded: false,
+            inputValue: 1,
+            // error: null,
+            // items: [],
+            // isLoaded: false,
             currencyValue: 0,
             outputValue: 0,
             unit: null,
-            temp: 0
+            countryCode: null
         }
     }
+
     componentDidMount() {
+        fetch("http://ip-api.com/json")
+            .then(res => res.json())
+            .then((result) => {
+                const code = result.countryCode;
+                fetch("https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=USD,EUR,VND")
+                    .then(res1 => res1.json())
+                    .then((result1) => {
+                        if (code === 'VN') {
+                            this.setState({
+                                isLoaded: true,
+                                items: result1.ETH,
+                                unit: 'VND',
+                                currencyValue: result1.ETH.VND,
+                                outputValue: result1.ETH.VND
+                            })
+                        } else {
+                            this.setState({
+                                isLoaded: true,
+                                items: result1.ETH,
+                                unit: 'USD',
+                                currencyValue: result1.ETH.USD,
+                                outputValue: result1.ETH.USD
+
+                            })
+                        }
+                    },
+                        (error) => {
+                            this.setState({
+                                isLoaded: true,
+                                error
+                            })
+                        })
+            })
+    }
+
+
+    callIpApi = () => {
+        fetch("http://ip-api.com/json")
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({ countryCode: result.countryCode });
+                    console.log('callIpApi thành công');
+                },
+                (error) => {
+                    console.log('kết nối không thành công');
+                }
+            )
+        return 'đã gọi callIpApi xong ';
+    }
+
+    callApiETH = () => {
         fetch("https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=USD,EUR,VND")
             .then(res => res.json())
             .then(
@@ -23,10 +77,11 @@ class index extends React.Component {
                     this.setState({
                         isLoaded: true,
                         items: result.ETH,
-                        currencyValue: result.ETH.USD,
-                        unit: 'USD'
+                        currencyValue: result.ETH.VND,
+                        unit: 'VND',
+                        outputValue: result.ETH.VND
                     });
-                    console.log(result);
+                    console.log('callApiETH thành công');
                 },
                 (error) => {
                     this.setState({
@@ -37,23 +92,24 @@ class index extends React.Component {
             )
     }
 
+
     updateOutput = () => {
-        const {inputValue, currencyValue} = this.state;
-        this.setState({outputValue: inputValue * currencyValue})
+        const { inputValue, currencyValue } = this.state;
+        this.setState({ outputValue: inputValue * currencyValue })
     }
 
     onChangeInput = (e) => {
         var value = e.target.value;
         if (value > 20) {
-            this.setState({ 
+            this.setState({
                 inputValue: 20,
             });
         } else if (value < -5) {
-            this.setState({ 
+            this.setState({
                 inputValue: -5,
             })
         } else {
-            this.setState({ 
+            this.setState({
                 inputValue: value,
             })
         }
@@ -62,17 +118,17 @@ class index extends React.Component {
     plus = () => {
         var value = Number(this.state.inputValue);
         if (value < 20) {
-            this.setState({ 
-                inputValue: value + 1,
+            this.setState({
+                inputValue: (value + 0.1).toFixed(1),
             })
         }
-        setTimeout(this.updateOutput, 50);
+        setTimeout(this.updateOutput, 20);
     }
     minus = () => {
         var value = Number(this.state.inputValue);
         if (value > -5) {
-            this.setState({ 
-                inputValue: value - 1,
+            this.setState({
+                inputValue: (value - 0.1).toFixed(1),
             })
         }
         setTimeout(this.updateOutput, 50);
@@ -109,11 +165,12 @@ class index extends React.Component {
                     /> */}
                     <div>
                         <span>Currency Unit:  </span>
-                        <select onChange={this.onSelected}>
+                        <select onChange={this.onSelected} value={this.state.currencyValue}>
+                            <option value={items.VND}>VND</option>
                             <option value={items.USD}>USD</option>
                             <option value={items.EUR}>EUR</option>
-                            <option value={items.VND}>VND</option>
                         </select>
+                        <div>1 ETH = {this.state.currencyValue} {this.state.unit}</div>
                     </div>
                     <div>
                         <button
