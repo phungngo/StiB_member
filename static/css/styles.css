@@ -1,0 +1,22 @@
+div{
+    margin: 10px 0
+}
+select{
+    width: 100px
+}
+table{
+    border-collapse: collapse
+}
+
+td{
+    width: fit-content
+}
+
+table, th, td{
+    border: 1px solid black;
+    padding: 2px 20px;
+}
+
+#form-add-user input{
+    margin-bottom: 5px
+}
