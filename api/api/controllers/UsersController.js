@@ -21,7 +21,6 @@ module.exports = {
         });
     },
     delete: (req, res) => {
-        console.log('abc')
         let sql = 'DELETE FROM info WHERE id = ?'
         db.query(sql, [req.params.id], (err, response) => {
             if (err) throw err
