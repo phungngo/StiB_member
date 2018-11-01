@@ -7,13 +7,16 @@
     "axios": "^0.18.0",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "google-map-react": "^1.0.9",
     "mysql": "^2.16.0",
     "net": "^1.0.2",
     "next": "^4.2.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.3.1",
-    "superagent": "^4.0.0-beta.5"
+    "react-validation": "^3.0.7",
+    "superagent": "^4.0.0-beta.5",
+    "validator": "^10.8.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
@@ -21,7 +24,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server.js && set PORT=3108"
   },
   "author": "",
   "license": "ISC"

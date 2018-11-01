@@ -1,7 +1,7 @@
 import * as React from 'react';
 // import MaxMinInput from '../components/maxMinInput';
 
-class index extends React.Component {
+class ETH extends React.Component {
 
     constructor(props) {
         super(props);
@@ -141,13 +141,6 @@ class index extends React.Component {
         setTimeout(this.updateOutput, 50);
     }
 
-    // onChangeInputChild = (e) => {
-    //     console.log(e);
-    //     this.setState({
-    //         temp: e * 10
-    //     })
-    // }
-
     render() {
         const { error, isLoaded, items } = this.state;
         if (error) {
@@ -156,26 +149,20 @@ class index extends React.Component {
             return <div>Loading...</div>;
         } else {
             return (
-                <div>
-                    <link href="/static/css/styles.css" rel="stylesheet" />
-                    {/* <MaxMinInput 
-                        max={50} 
-                        min={-5} 
-                        onChangeInputChild = {this.onChangeInputChild}
-                    /> */}
+                <div id="eth">
                     <div>
-                        <span>Currency Unit:  </span>
+                        <div><span>Currency Unit:  </span>
                         <select onChange={this.onSelected} value={this.state.currencyValue}>
                             <option value={items.VND}>VND</option>
                             <option value={items.USD}>USD</option>
                             <option value={items.EUR}>EUR</option>
-                        </select>
+                        </select></div>
                         <div>1 ETH = {this.state.currencyValue} {this.state.unit}</div>
                     </div>
                     <div>
                         <button
                             onClick={this.minus}
-                            style={{ marginRight: 10 }}
+                            style={{ marginRight: 10, width: 25}}
                         >-</button>
                         <input
                             type="number"
@@ -185,7 +172,7 @@ class index extends React.Component {
                         />
                         <button
                             onClick={this.plus}
-                            style={{ marginLeft: 10 }}
+                            style={{ marginLeft: 10, width: 25 }}
                         >+</button>
                     </div>
                     <div>{this.state.outputValue} {this.state.unit}</div>
@@ -195,4 +182,4 @@ class index extends React.Component {
     }
 }
 
-export default index;
+export default ETH;

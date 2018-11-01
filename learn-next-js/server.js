@@ -32,14 +32,17 @@ app.prepare().then(() => {
   server.delete('/users/:id')
   server.post('/users')
   server.put('/users/:id')
+  server.get('/login/:email')
+  server.post('/signup')
+  server.get('/users/:id')
 
   server.get('*', (req, res) => {
     return handle(req, res);
   });
 
   /* eslint-disable no-console */
-  server.listen(3000, (err) => {
+  server.listen(3108, (err) => {
     if (err) throw err;
-    console.log('Server ready on http://localhost:3000');
+    console.log('Server ready on http://localhost:3108');
   });
 });

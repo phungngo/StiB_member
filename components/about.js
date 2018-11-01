@@ -1,1 +1,0 @@
-export default() => <div>đây là liên hệ chưa đăng nhập</div>
